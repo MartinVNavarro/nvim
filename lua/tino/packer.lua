@@ -23,8 +23,9 @@ return require('packer').startup(function(use)
 	  end,
   }
 
-  use "theprimeagen/harpoon"
+  use 'theprimeagen/harpoon'
 
+  use 'mbbill/undotree'
   use {
 	  'VonHeikemen/lsp-zero.nvim',
 	  branch = 'v2.x',
