@@ -2,8 +2,8 @@ local lsp = require('lsp-zero').preset("recommended")
 
 lsp.nvim_workspace()
 lsp.ensure_installed({
-    'lua_lsp',
     'gopls',
+    'jdtls',
 })
 
 lsp.set_sign_icons({

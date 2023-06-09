@@ -18,3 +18,7 @@ end
 vim.keymap.set("n","<leader>ms", function() go_to_netrw('save') end)
 vim.keymap.set("n","<leader>mf", function() go_to_netrw('quit') end)
 vim.keymap.set("n","<leader>mq", function() go_to_netrw('force_quit') end)
+
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
+vim.api.nvim_set_keymap("i","<C-j>",'copilot#Accept("<CR>")',{expr = true, silent = true, script = true})
