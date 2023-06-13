@@ -1,0 +1,5 @@
+{
+    "java.maven.downloadSources" : true,
+//    "java.jdt.ls.vmargs" : "-noverify -Xmx1G -javaagent:/home/tino/.local/share/nvim/mason/packages/jdtls/lombok.jar -Xbootclasspath/a:/home/tino/.local/nvim/mason/packages/jdtls/lombok.jar",
+    "java.jdt.ls.lombokSupport.enabled" : true,
+}

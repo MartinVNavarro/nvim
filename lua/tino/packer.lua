@@ -22,7 +22,7 @@ return require('packer').startup(function(use)
 		  ts_update()
 	  end,
   }
-
+  use 'RRethy/vim-illuminate'
   use 'theprimeagen/harpoon'
   use 'mbbill/undotree'
   use {
@@ -46,5 +46,15 @@ return require('packer').startup(function(use)
   }
 }
     use 'mfussenegger/nvim-jdtls'
+    use 'williamboman/mason.nvim'
+    use 'williamboman/mason-lspconfig.nvim'
 
+    use { "hrsh7th/nvim-cmp" }
+    use { "hrsh7th/cmp-buffer" }
+    use { "hrsh7th/cmp-path" }
+    use { "hrsh7th/cmp-nvim-lsp" }
+
+    use { "jose-elias-alvarez/null-ls.nvim" }
+
+    use ("neoclide/coc.nvim", { branch = "release" })
 end)
