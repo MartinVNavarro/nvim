@@ -8,34 +8,41 @@ end
 
 local cmp = require("cmp")
 
---[[
 cmp.setup({
+    snippet = {
+        expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+        end,
+    },
     mapping = {
         ["<C-p>"] = cmp.mapping.select_prev_item(),
         ["<C-n>"] = cmp.mapping.select_next_item(),
         ["<C-d>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete(),
-        ["<C-e>"] = cmp.mapping.close(),
+        ["<c-space>"] = cmp.mapping.complete(),
+        ["<C-x>"] = cmp.mapping.close(),
         ["<CR>"] = cmp.mapping.confirm({
-        behavior = cmp.ConfirmBehavior.Replace,
-        select = true,
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
         }),
     },
-    sources = {
-        { name = "nvim_lsp" },
-    --    { name = "vsnip" },
-        { name = "buffer" },
-    },
-    }
-)
-]]
+    sources = cmp.config.sources({
+            { name = "luasnip" },
+            { name = "nvim_lua" },
+            { name = "nvim_lsp" },
+        },
+        {
+            { name = "path" },
+            { name = "buffer", keyword_length = 3 },
+    }),
+})
+
+
 
 --M.capabilities = require('cmp_nvim_lsp').default_capabilities()
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 --M.capabilities.textDocument.completion.completionItem.snippetSupport = true
 M.capabilities = cmp_nvim_lsp.default_capabilities(M.capabilities)
-
 
 M.setup = function()
   local signs = {
@@ -79,33 +86,14 @@ M.setup = function()
   })
 end
 
---[[
-local function lsp_keymaps(bufnr)
-  local opts = { noremap = true, silent = true }
-  local keymap = vim.api.nvim_buf_set_keymap
-  keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-  keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-  keymap(bufnr, "n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  keymap(bufnr, "n", "<leader>f", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", opts)
-  keymap(bufnr, "n", "<leader>,", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-  keymap(bufnr, "n", "<leader>.", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
-  keymap(bufnr, "n", "]u", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
-  keymap(bufnr, "n", "[u", "<cmd>lua vim.diagnostic.goto_prev({buffer=0})<cr>", opts)
-  keymap(bufnr, "n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
-  keymap(bufnr, "n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-  keymap(bufnr, "n", "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-end
-]]
-
---[[
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+
+vim.keymap.set('n', '<leader>jdim', require('jdtls').organize_imports)
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -137,7 +125,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         end, opts)
     end,
 })
-]]
 
 M.on_attach = function(client, bufnr)
 
@@ -145,12 +132,12 @@ M.on_attach = function(client, bufnr)
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
     buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  lsp_keymaps(bufnr)
-  local status_ok, illuminate = pcall(require, "illuminate")
-  if not status_ok then return end
-  illuminate.on_attach(client)
+    lsp_keymaps(bufnr)
+    local status_ok, illuminate = pcall(require, "illuminate")
+    if not status_ok then return end
+    illuminate.on_attach(client)
 
-  vim.o.completeopt = "menuone,noselect"
+    vim.o.completeopt = "menuone,noselect"
 end
 
 return M

@@ -22,6 +22,7 @@ return require('packer').startup(function(use)
 		  ts_update()
 	  end,
   }
+  use 'nvim-treesitter/playground'
   use 'RRethy/vim-illuminate'
   use 'theprimeagen/harpoon'
   use 'mbbill/undotree'
@@ -53,8 +54,11 @@ return require('packer').startup(function(use)
     use { "hrsh7th/cmp-buffer" }
     use { "hrsh7th/cmp-path" }
     use { "hrsh7th/cmp-nvim-lsp" }
+    use { "hrsh7th/cmp-nvim-lua" }
+
+    use { "saadparwaiz1/cmp_luasnip" }
+
+    use("L3MON4D3/LuaSnip")
 
     use { "jose-elias-alvarez/null-ls.nvim" }
-
-    use ("neoclide/coc.nvim", { branch = "release" })
 end)

@@ -26,7 +26,7 @@ vim.list_extend(
 local extendedClientCapabilities = require("jdtls").extendedClientCapabilities
 extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
-local enable_custom_config = false
+local enable_custom_config = true
 
 M.default_cmd = function()
     return
@@ -57,12 +57,6 @@ M.default_cmd = function()
 
 
 M.get_config = function()
-    if not enable_custom_config then
-        return {
-            cmd = M.default_cmd(),
-        }
-    end
-
     return {
         cmd = M.default_cmd(),
         flags = {
@@ -70,8 +64,8 @@ M.get_config = function()
             allow_incremental_sync = true,
         },
         handlers = {},
-        root_dir = function() 
-            require("jdtls.setup").find_root({ 'gradle.build', 'pom.xml', '.git' })
+        root_dir = function()
+            return vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1])
         end,
         capabilities = M.capabilities,
         contentProvider = { preferred = 'fernflower' },

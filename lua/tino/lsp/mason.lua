@@ -1,5 +1,5 @@
 local servers = {
---    'jdtls',
+    'jdtls',
     'gopls',
     'lua_ls',
 }
